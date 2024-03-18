@@ -27,14 +27,14 @@ def calculate_moving_std(prices, window_size):
     return np.lib.stride_tricks.sliding_window_view(prices, window_size).std(axis=-1)
 
 def identify_high_volatility(data, window_size, threshold):
-    # Extrair os preços de fechamento da lista de dicionários
+    # extrair os preços de fechamento da lista de dicionários
     prices = [day['close'] for day in data]
     dates = [day['date'] for day in data]
     
-    # Calcular o desvio padrão móvel dos preços
+    # calcular o desvio padrão móvel dos preços
     moving_std = np.concatenate(([np.nan] * (window_size - 1), calculate_moving_std(prices, window_size)))
     
-    # Identificar as datas com alta volatilidade
+    # identificar as datas com alta volatilidade
     high_volatility_dates = [dates[i] for i, std in enumerate(moving_std) if std > threshold]
     return high_volatility_dates
 
